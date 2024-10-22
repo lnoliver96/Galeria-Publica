@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GalleryRepository {
@@ -27,9 +28,9 @@ public class GalleryRepository {
         int w = (int)context.getResources().getDimension(R.dimen.im_width);
         int h = (int)context.getResources().getDimension(R.dimen.im_height);
 
-        String[] projection = newString[]{MediaStore.Images.Media._ID,
+        String[] projection = new String[]{MediaStore.Images.Media._ID,
             MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.DATE_ADDED,
+            MediaStore.Images.Media.DATE_ADDED,
             MediaStore.Images.Media.SIZE};
 
         String selection = null;
@@ -46,11 +47,11 @@ public class GalleryRepository {
                 ContentResolver.QUERY_ARG_SORT_COLUMNS,sort
             );
             queryArgs.putInt(
-                    ContentResolver.QUERY_ARG_SORT_DIRECTION, ContentResolver.QUERY_ARG_SORT_DIRECTION,
+                    ContentResolver.QUERY_ARG_SORT_DIRECTION,
                     ContentResolver.QUERY_SORT_DIRECTION_ASCENDING
             );
             //limit,offset
-            queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT);
+            queryArgs.putInt(ContentResolver.QUERY_ARG_LIMIT,limit);
             queryArgs.putInt(ContentResolver.QUERY_ARG_OFFSET,offset);
 
             cursor = context.getContentResolver().query(
@@ -66,6 +67,7 @@ public class GalleryRepository {
             cursor = context.getContentResolver().query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     projection,
+                    selection,
                     selectionArgs,
                     sort + "ASC + LIMIT" + String.valueOf(limit) + "OFFSET" + String.valueOf(offset)
             );
@@ -79,7 +81,7 @@ public class GalleryRepository {
                 long id = cursor.getLong(idColumn);
                 Uri contentUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,id);
                 String name = cursor.getString(nameColumn);
-                int dateAdded = cursor.getString(nameColumn);
+                int dateAdded = cursor.getInt(nameColumn);
                 int size = cursor.getInt(dateAddedColumn);
                 Bitmap thumb = Util.getBitmap(context, contentUri, w, h);
 
