@@ -5,6 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.PagingData;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +21,13 @@ public class ListViewFragment extends Fragment {
     private MainViewModel mViewModel;
     private View view;
 
-    public ListViewFragment() newInstance(){
+    public static ListViewFragment newInstance(){
         return new ListViewFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.list_view_fragment, container, false);
+        view = inflater.inflate(R.layout.fragment_list_view, container, false);
         return view;
     }
 
@@ -38,7 +44,7 @@ public class ListViewFragment extends Fragment {
             }
         });
 
-        RecyclerView rvGallery = (RecyclerView) view.findViewById(R.id.rvList);
+        RecyclerView rvGallery = (RecyclerView)view.findViewById(R.id.rvList);
         rvGallery.setAdapter(listAdapter);
         rvGallery.setLayoutManager(new LinearLayoutManager(getContext()));
     }
