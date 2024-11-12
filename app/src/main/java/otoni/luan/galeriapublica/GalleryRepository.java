@@ -69,8 +69,9 @@ public class GalleryRepository {
                     projection,
                     selection,
                     selectionArgs,
-                    sort + "ASC + LIMIT" + String.valueOf(limit) + "OFFSET" + String.valueOf(offset)
+                    sort + "ASC LIMIT" + String.valueOf(limit) + "OFFSET" + String.valueOf(offset)
             );
+        }
             int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
             int nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME);
             int dateAddedColumn = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED);
@@ -81,8 +82,8 @@ public class GalleryRepository {
                 long id = cursor.getLong(idColumn);
                 Uri contentUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,id);
                 String name = cursor.getString(nameColumn);
-                int dateAdded = cursor.getInt(nameColumn);
-                int size = cursor.getInt(dateAddedColumn);
+                int dateAdded = cursor.getInt(dateAddedColumn);
+                int size = cursor.getInt(sizeColumn);
                 Bitmap thumb = Util.getBitmap(context, contentUri, w, h);
 
                 // Stores column values and the contentUri in a local object
@@ -91,8 +92,5 @@ public class GalleryRepository {
                 imageDataList.add(new ImageData(contentUri, thumb, name, new Date(dateAdded*1000L), size));
             }
             return imageDataList;
-
-
-        }
     }
 }
